@@ -5,3 +5,30 @@
 
 # VarifyServer 规则：忽略 node_modules 目录
 /VarifyServer/node_modules/
+# === 1. 强制忽略 build 目录及其内容 ===
+# 精确忽略 QT 生成的调试构建目录
+*/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/
+*.o              # 对象文件
+/build/          # 忽略项目根目录下的 build 文件夹
+**/build/        # 忽略所有层级的 build 文件夹（包括子目录）
+*.idx
+# === 2. QT 编译生成文件 ===
+*.pro.user       # QT Creator 用户配置
+*.autosave       # 自动保存文件
+Makefile         # 编译生成的 Makefile
+*.a              # 静态库
+*.dll            # 动态库
+*.exe            # 可执行文件
+*.Debug
+*.Release
+# === 3. 系统/编辑器临时文件 ===
+.DS_Store        # Mac 系统文件
+Thumbs.db        # Windows 缩略图缓存
+*.swp            # Vim 临时文件
+*.swo
+~$*              # Office 临时文件
+
+# === 4. 其他可能需要忽略的文件 ===
+*.log            # 日志文件
+*.qmlc           # QML 缓存文件
+*.qm             # QT 翻译文件（可根据需要保留）
