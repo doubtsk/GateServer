@@ -1,0 +1,7 @@
+# GateServe 规则：只上传.cpp和.h文件，忽略其他所有内容
+/GateServe/**/*
+!/GateServe/**/*.cpp
+!/GateServe/**/*.h
+
+# VarifyServer 规则：忽略整个node_modules目录及其内容
+/VarifyServer/node_modules/
