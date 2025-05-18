@@ -2,6 +2,10 @@
 /GateServe/**/*
 !/GateServe/**/*.cpp
 !/GateServe/**/*.h
+!/GateServe/**/*.cc
+!/GateServe/**/*.proto
+!/GateServe/**/*.props
+
 
 # VarifyServer 规则：忽略 node_modules 目录
 /VarifyServer/node_modules/
