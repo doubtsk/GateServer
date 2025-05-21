@@ -25,7 +25,6 @@ LogicSystem::LogicSystem()
 	RegPost("/get_varifycode", [](std::shared_ptr<HttpConnection> connection)
 			{
 		auto body_str = boost::beast::buffers_to_string(connection->_request.body().data());
-		std::cout << "receive body is" << body_str << std::endl;
 		connection->_response.set(http::field::content_type, "text/json");
 		Json::Value root;
 		Json::Reader reader;
