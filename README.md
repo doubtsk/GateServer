@@ -6,3 +6,8 @@
 ## Redis使用的是3.0.504版本[Redis](https://github.com/microsoftarchive/redis/releases/download/win-3.0.504/Redis-x64-3.0.504.msi)
 # 由于技术有限，所以先实现Windows版本的聊天程序，等什么时候有技术了，再尝试Linux上的移植
 # 感谢恋恋风辰大佬的无私奉献， [恋恋风辰](https://gitbookcpp.llfc.club/)这里是大佬的博客
+<div align="center">
+  <img src="https://github.com/doubtsk/GateServer/blob/master/picture/Main%20interface.png" alt="Main interface">
+  <br>
+  <em>Main interface</em>
+</div>
