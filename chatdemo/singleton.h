@@ -26,7 +26,7 @@ public:
     }
     ~Singleton()
     {
-        std::cout<<"this is a Singleton disturct"<<std::endl;
+        //std::cout<<"this is a Singleton disturct"<<std::endl;
     }
 };
 template <typename T>
