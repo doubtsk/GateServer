@@ -18,6 +18,8 @@ public:
 private slots:
     void on_gain_btn_clicked();
     void slot_reg_mod_finish(ReqId id, QString res, ErrorCodes err);
+    void on_pushButton_3_clicked();
+
 private:
     void initHttpHandlers();
     void showTip(QString str,bool b_ok);
