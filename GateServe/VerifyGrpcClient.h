@@ -85,7 +85,7 @@ public:
         }
         else {
             pool_->returnConnection(std::move(stub));
-            reply.set_error(ErrorCode::RPCFailed);
+            reply.set_error(ErrorCodes::RPCFailed);
             return reply;
         }
     }
