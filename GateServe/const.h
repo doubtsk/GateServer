@@ -35,4 +35,16 @@ enum ErrorCodes
 	TokenInvalid = 1010,   //Token ß–ß
 	UidInvalid = 1011,  //uidŒﬁ–ß
 };
+
+class Defer
+{
+public:
+	Defer(std::function<void()> func) :func_(func) {}
+	~Defer()
+	{
+		func_();
+	}
+private:
+	std::function<void()> func_;
+};
 #define CODEPREFIX "code_"
