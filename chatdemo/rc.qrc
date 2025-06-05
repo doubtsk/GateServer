@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>res/123673349_p0.png</file>
         <file>style/stylesheet.qss</file>
+        <file>res/close_eye.png</file>
+        <file>res/hover.png</file>
+        <file>res/open_eye.png</file>
     </qresource>
 </RCC>
