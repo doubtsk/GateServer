@@ -29,11 +29,16 @@ enum ReqId
 {
     ID_GET_VARIFY_CODE =1001,//获取验证码
     ID_REG_USER  =1002,//注册用户
+    ID_RESET_PWD = 1003,
+    ID_LOGIN_USER= 1004,
+    ID_CHAT_LOGIN = 1005,
+    ID_CHAT_LOGIN_RSP = 1006,
 };
 
 enum Modules
 {
-    REGISTERMOD=0,
+    REGISTERMOD = 0,
+    RESETMOD = 1,
 };
 enum TipErr{
     TIP_SUCCESS = 0,
