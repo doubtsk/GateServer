@@ -23,8 +23,6 @@ private slots:
     void on_return_btn_clicked();
     void on_cancel_btn_clicked();
 
-    void on_pushButton_2_clicked();
-
 private:
 
     void ChangeTipPage();
