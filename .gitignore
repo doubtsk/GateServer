@@ -34,3 +34,9 @@ Thumbs.db        # Windows 缩略图缓存
 *.log            # 日志文件
 *.qmlc           # QML 缓存文件
 *.qm             # QT 翻译文件（可根据需要保留）
+# 只保留statusServer下的.cpp和.h文件
+/StatusServer/**/*
+!/StatusServer/**/*.cpp
+!/StatusServer/**/*.h
+!/StatusServer/**/*.cc
+!/StatusServer/**/*.proto
