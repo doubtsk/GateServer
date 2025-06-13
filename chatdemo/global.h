@@ -35,10 +35,10 @@ enum ReqId
     ID_CHAT_LOGIN_RSP = 1006,
 };
 
-enum Modules
-{
+enum Modules{
     REGISTERMOD = 0,
     RESETMOD = 1,
+    LOGINMOD = 2,
 };
 enum TipErr{
     TIP_SUCCESS = 0,
@@ -59,6 +59,14 @@ enum ClickLbState
 {
     Normal = 0,
     Selected = 1,
+};
+
+struct ServerInfo
+{
+    QString Host;
+    QString Port;
+    QString Token;
+    int Uid;
 };
 
 extern QString gate_url_prefix;
