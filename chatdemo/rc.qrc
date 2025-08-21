@@ -5,6 +5,5 @@
         <file>res/close_eye.png</file>
         <file>res/hover.png</file>
         <file>res/open_eye.png</file>
-        <file>res/head_1.jpg</file>
     </qresource>
 </RCC>

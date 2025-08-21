@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include "httpmgr.h"
+#include "tcpmgr.h"
 loginDialog::loginDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::loginDialog)
@@ -17,6 +18,12 @@ loginDialog::loginDialog(QWidget *parent)
     //连续登录回包信号
     connect(HttpMgr::GetInstance().get(),&HttpMgr::sig_login_mod_finish,this,
             &loginDialog::slot_login_mod_finish);
+    //连接tcp连接请求的信号和槽函数
+    connect(this, &loginDialog::sig_connect_tcp, TcpMgr::GetInstance().get(), &TcpMgr::slot_tcp_connect);
+    //连接tcp管理者发出的连接成功信号
+    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_con_success, this, &loginDialog::slot_tcp_con_finish);
+    //连接tcp管理者发出的连接失败信号
+    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_login_failed, this, &loginDialog::slot_tcp_con_finish);
 }
 
 loginDialog::~loginDialog()
@@ -35,18 +42,16 @@ void loginDialog::initHttpHandlers()
             enableBtn(true);
             return;
         }
-        auto email = jsonObj["email"].toString();
-
+        auto user = jsonObj["user"].toString();
         //发送信号通知tcpMgr发送长链接
         ServerInfo si;
         si.Uid = jsonObj["uid"].toInt();
         si.Host = jsonObj["host"].toString();
         si.Port = jsonObj["port"].toString();
         si.Token = jsonObj["token"].toString();
-
         _uid = si.Uid;
         _token = si.Token;
-        qDebug()<< "email is " << email << " uid is " << si.Uid <<" host is "
+        qDebug()<< "user is " << user << " uid is " << si.Uid <<" host is "
                  << si.Host << " Port is " << si.Port << " Token is " << si.Token;
         emit sig_connect_tcp(si);
     });
@@ -213,3 +218,27 @@ void loginDialog::slot_login_mod_finish(ReqId id, QString res, ErrorCodes err)
     return;
 }
 
+void loginDialog::slot_tcp_con_finish(bool bsuccess)
+{
+    if(bsuccess){
+        showTip(tr("聊天服务连接成功，正在登录..."),true);
+        QJsonObject jsonObj;
+        jsonObj["uid"] = _uid;
+        jsonObj["token"] = _token;
+        QJsonDocument doc(jsonObj);
+        QString jsonString = doc.toJson(QJsonDocument::Indented);
+        //发送tcp请求给chat server
+        emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_CHAT_LOGIN, jsonString);
+    }else{
+        showTip(tr("网络异常"),false);
+        enableBtn(true);
+    }
+}
+
+void loginDialog::sig_login_failed(int err)
+{
+    QString result = QString("登陆失败，err is %1").arg(err);
+    showTip(result,false);
+    enableBtn(true);
+
+}
