@@ -40,3 +40,9 @@ Thumbs.db        # Windows 缩略图缓存
 !/StatusServer/**/*.h
 !/StatusServer/**/*.cc
 !/StatusServer/**/*.proto
+# 只保留ChatServer下的.cpp和.h文件
+/ChatServer/**/**
+!/ChatServer/**/*.cpp
+!/ChatServer/**/*.h
+!/ChatServer/**/*.cc
+!/ChatServer/**/*.proto
