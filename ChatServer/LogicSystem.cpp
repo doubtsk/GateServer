@@ -1,5 +1,8 @@
 #include "LogicSystem.h"
-
+#include"const.h"
+#include"StatusGrpcClient.h"
+#include"MysqlDao.h"
+#include"MysqlMgr.h"
 using namespace std;
 
 LogicSystem::LogicSystem() :_b_stop(false) {
@@ -63,17 +66,46 @@ void LogicSystem::DealMsg() {
 }
 
 void LogicSystem::RegisterCallBacks() {
-	_fun_callbacks[MSG_HELLO_WORD] = std::bind(&LogicSystem::HelloWordCallBack, this,
+	_fun_callbacks[MSG_CHAT_LOGIN] = std::bind(&LogicSystem::LoginHandler, this,
 		placeholders::_1, placeholders::_2, placeholders::_3);
 }
 
-void LogicSystem::HelloWordCallBack(shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short& msg_id, const string& msg_data)
+{
 	Json::Reader reader;
 	Json::Value root;
 	reader.parse(msg_data, root);
-	std::cout << "recevie msg id  is " << root["id"].asInt() << " msg data is "
-		<< root["data"].asString() << endl;
-	root["data"] = "server has received msg, msg data is " + root["data"].asString();
-	std::string return_str = root.toStyledString();
-	session->Send(return_str, root["id"].asInt());
+	auto uid = root["uid"].asInt();
+	std::cout << "user login uid is  " << uid << " user token  is "
+		<< root["token"].asString() << endl;
+	//从状态服务器获取token匹配是否准确
+	auto rsp = StatusGrpcClient::GetInstance()->Login(uid, root["token"].asString());
+	Json::Value  rtvalue;
+	Defer defer([this, &rtvalue, session, msg_id]() {
+		std::string return_str = rtvalue.toStyledString();
+		session->Send(return_str, msg_id);
+		});
+
+	rtvalue["error"] = rsp.error();
+	if (rsp.error() != ErrorCodes::Success) {
+		return;
+	}
+
+	//内存中查询用户信息
+	std::shared_ptr<UserInfo> user_info = nullptr;
+	user_info = MysqlMgr::GetInstance()->GetUser(uid);
+	if (user_info == nullptr) 
+	{
+		//查询数据库
+		user_info = MysqlMgr::GetInstance()->GetUser(uid);
+		if (user_info == nullptr) 
+		{
+			rtvalue["error"] = ErrorCodes::UidInvalid;
+			return;
+		}
+	}
+
+	rtvalue["uid"] = uid;
+	rtvalue["token"] = rsp.token();
+	rtvalue["name"] = user_info->name;
 }
