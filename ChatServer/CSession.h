@@ -24,12 +24,17 @@ public:
 	void Send(char* msg, short max_length, short msgid);
 	void Send(std::string msg, short msgid);
 	void Close();
+	void AsyncReadHead(int total_len);
+	void asyncReadFull(std::size_t maxLength, std::function<void(const boost::system::error_code&, std::size_t)>handler);
+	void asyncReadLen(std::size_t read_len, std::size_t total_len, std::function<void(const boost::system::error_code&, std::size_t)> handler);
+	void AsyncReadBody(int length);
 	std::shared_ptr<CSession> SharedSelf();
 private:
 	void HandleRead(const boost::system::error_code& error, size_t  bytes_transferred, std::shared_ptr<CSession> shared_self);
 	void HandleWrite(const boost::system::error_code& error, std::shared_ptr<CSession> shared_self);
 	tcp::socket _socket;
 	std::string _uuid;
+	//std::string _session_id;
 	char _data[MAX_LENGTH];
 	CServer* _server;
 	bool _b_close;
