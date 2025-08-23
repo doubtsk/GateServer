@@ -1,5 +1,10 @@
 #include "tcpmgr.h"
 #include <QAbstractSocket>
+TcpMgr::~TcpMgr()
+{
+
+}
+
 TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_message_len(0)
 {
     QObject::connect(&_socket, &QTcpSocket::connected, [&]()
